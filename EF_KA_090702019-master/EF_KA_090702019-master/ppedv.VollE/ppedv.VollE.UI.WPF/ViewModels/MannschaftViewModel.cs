@@ -30,15 +30,21 @@ namespace ppedv.VollE.UI.WPF.ViewModels
                 _SelectedMannschaft = value;
                 if(_SelectedMannschaft!=null)
                 {
+                    //clear all List
                     SpielerList.Clear();
-
+                    AlleSpielerExclusivManschaftSpielerList.Clear();
+                    TrainerList.Clear();
+                    //fetch all List
                     foreach (var item in _SelectedMannschaft.Spieler)
                         SpielerList.Add(item);
-
-                    AlleSpielerExclusivManschaftSpielerList.Clear();
+                                        
                     foreach (var item in core.UnitOfWork.SpielerRepository.GetAll().
                                                         Where(x => !_SelectedMannschaft.Spieler.Contains(x)).ToList())
                         AlleSpielerExclusivManschaftSpielerList.Add(item);
+                    foreach(var item in core.UnitOfWork.GetRepo<Trainer>().GetAll().ToList())
+                    {
+                        TrainerList.Add(item);
+                    }
 
                 }
                 
@@ -88,16 +94,23 @@ namespace ppedv.VollE.UI.WPF.ViewModels
         {
             if (SelectedMannschaftSpieler == null) return;
             AlleSpielerExclusivManschaftSpielerList.Add(SelectedMannschaftSpieler);
+            var idSpielerToRemove = SelectedMannschaftSpieler.Id;
             SpielerList.Remove(SelectedMannschaftSpieler);
-           
+
+            
+            SelectedMannschaft.Spieler = SelectedMannschaft.Spieler.Where(s => s.Id != idSpielerToRemove).ToList();
+
+            
         }
 
         private void UserWantsToAddSpieler(object obj)
         {
             if (SelectedAlleSpielerExclusivMannschaftSpieler == null) return;
             SpielerList.Add(SelectedAlleSpielerExclusivMannschaftSpieler);
+            var idSpielerToAdd = SelectedAlleSpielerExclusivMannschaftSpieler.Id;
             SelectedMannschaft.Spieler.Add(SelectedAlleSpielerExclusivMannschaftSpieler);
             AlleSpielerExclusivManschaftSpielerList.Remove(SelectedAlleSpielerExclusivMannschaftSpieler);
+      
         }
 
         private void UserWantsToAddNewMannschaft(object obj)
@@ -133,8 +146,9 @@ namespace ppedv.VollE.UI.WPF.ViewModels
         {
             try
             {
+                if (SelectedMannschaft == null) return; //TODO notify no record is selected
                 Mannschaft loaded = core.UnitOfWork.GetRepo<Mannschaft>().GetById(SelectedMannschaft.Id);
-                if (loaded == null) core.UnitOfWork.GetRepo<Mannschaft>().Update(SelectedMannschaft);
+                if (loaded != null) core.UnitOfWork.GetRepo<Mannschaft>().Update(SelectedMannschaft);
                 else
                     core.UnitOfWork.GetRepo<Mannschaft>().Add(SelectedMannschaft);
                 core.UnitOfWork.SaveChanges();

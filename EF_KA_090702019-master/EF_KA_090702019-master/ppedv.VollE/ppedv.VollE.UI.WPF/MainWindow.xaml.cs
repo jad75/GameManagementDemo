@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ppedv.VollE.UI.WPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace ppedv.VollE.UI.WPF
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
     }
 }

@@ -7,6 +7,7 @@
              xmlns:vm="clr-namespace:ppedv.VollE.UI.WPF.ViewModels"
             xmlns:local2="clr-namespace:ppedv.VollE.Model;assembly=ppedv.VollE.Model"
             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+               xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -20,6 +21,11 @@
     <UserControl.DataContext>
         <vm:SpielerViewModel/>
     </UserControl.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadedTabCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <DockPanel>
         <WrapPanel DockPanel.Dock="Top" Margin="8">
             <Button Command="{Binding SaveCommand}">Speichern</Button>

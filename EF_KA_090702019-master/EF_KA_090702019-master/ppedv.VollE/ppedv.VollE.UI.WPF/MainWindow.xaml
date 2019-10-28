@@ -23,19 +23,26 @@
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom" Height="22" Background="NavajoWhite"/>
-        <TabControl>
-            <TabItem Header="Spieler">
-                <views:SpielerView/>
-            </TabItem>
-            <TabItem Header="Trainer">
-                <views:TrainerView/>
-            </TabItem>
-            <TabItem Header="Mannschaft">
-                <views:MannschaftView/>
-            </TabItem>
-            <TabItem Header="Spiel">
-                <views:SpielView/>
-            </TabItem>
+        <TabControl ItemsSource="{Binding Tabs}" 
+                    SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
+            <TabControl.ItemTemplate>
+                <!-- this is the header template-->
+                <DataTemplate>
+                    <TextBlock
+                Text="{Binding Header}" />
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <!-- this is the body of the TabItem template-->
+                <DataTemplate >
+                    <!--<MyUserControl xmlns="clr-namespace:WpfApplication12" />-->
+                    <ContentPresenter Content="{Binding .}" />
+                    <!--<ContentControl Content="{Binding Content}" />-->
+                </DataTemplate>
+
+            </TabControl.ContentTemplate>
+
+           
         </TabControl>
     </DockPanel>
 </Window>

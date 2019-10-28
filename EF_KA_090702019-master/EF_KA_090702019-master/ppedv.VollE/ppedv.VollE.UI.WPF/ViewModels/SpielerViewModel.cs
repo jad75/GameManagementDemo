@@ -22,15 +22,15 @@ namespace ppedv.VollE.UI.WPF.ViewModels
         public ICommand LadenCommand { get; set; }
 
         public Spieler SelectedSpieler { get; set; }
-     
+        public ICommand OnLoadedTabCommand { get; set; }
 
         Core core = null;
         public SpielerViewModel()
         {
             SpielerList = new ObservableCollection<Spieler>();
             LoadSpieler();
-
-            SaveCommand = new RelayCommand(UserWantsToSave);
+            OnLoadedTabCommand = new RelayCommand(DoSimpleCommand);
+        SaveCommand = new RelayCommand(UserWantsToSave);
             NewCommand = new RelayCommand(UserWantsToAddNewSpieler);
             //DeleteCommand = new RelayCommand(o => { core.UnitOfWork.GetRepo<Spieler>().Delete(SelectedSpieler); LoadSpieler(); });
             DeleteCommand = new RelayCommand(o => {
@@ -87,6 +87,11 @@ namespace ppedv.VollE.UI.WPF.ViewModels
             var sp = new Spieler() { Name = "NEU", Händigkeit = true, Geschlecht = Geschlecht.Divers };
             core.UnitOfWork.SpielerRepository.Add(sp);
             SpielerList.Add(sp);
+        }
+
+        private void DoSimpleCommand(object obj)
+        {
+
         }
     }
 }
